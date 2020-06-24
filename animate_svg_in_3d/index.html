@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script src="js/three.min.js"></script>
+    <script src="js/OrbitControls.js"></script>
+
+    <script>
+      var camera, controls, scene, render, geometry;
+
+      function init() {
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xcccccc);
+
+        renderer = new THREE.WebGLRenderer();
+        renderer = setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+
+        var container = document.getElementById("container");
+        container.appendChild(renderer.domElement);
+
+        camera = new THREE.PerspectiveCamera(
+          90,
+          window.innerWidth / window.innerHeight,
+          1,
+          3000
+        );
+        camera.position.z = 500;
+        controls = new THREE.OrbitControls(camera, render, domElement);
+
+        var texture = new THREE.TextureLoader().load("particle.png");
+        var material = new THREE.PointCloudMaterial({
+          size: 10,
+          vertexColors: THREE.vertexColors,
+          map: texture,
+        });
+        geometry = new THREE.Geometry();
+        var x, y, z;
+
+        for (var i = 0; i <= 1; i++) {
+          x = 0;
+          y = 0;
+          z = 0;
+
+          geometry.vertices.push(new THREE.Vector3(x, y, z));
+          geometry.colors.push(new THREE.Color(Math.random(), Math.random()));
+        }
+
+        var pointCloud = new.THREE.pointCloud(geometry, material);
+        scene.add(pointCloud);
+      }
+
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth / window.innerHeight);
+      }
+
+      var i = 0;
+      function animate() {
+        i++;
+        requestAnimationFrame(animate);
+
+        geometry.verticesNeedUpdate = true;
+
+        render();
+      }
+
+      function render() {
+        renderer.render(scene, camera);
+      }
+
+      init();
+      animate();
+    </script>
+  </body>
+</html>
