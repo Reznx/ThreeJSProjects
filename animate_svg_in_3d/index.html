@@ -7,18 +7,20 @@
   </head>
   <body>
     <div id="container"></div>
-    <script src="js/three.min.js"></script>
-    <script src="js/OrbitControls.js"></script>
+    <script src="./js/three.min.js"></script>
 
-    <script>
-      var camera, controls, scene, render, geometry;
+    <script type="module">
+      import * as THREE from "./js/three.module.js"
+      import { OrbitControls } from "./js/OrbitControls.js";
+
+      var camera, controls, scene, renderer, geometry;
 
       function init() {
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0xcccccc);
 
         renderer = new THREE.WebGLRenderer();
-        renderer = setPixelRatio(window.devicePixelRatio);
+        renderer.setPixelRatio(window.devicePixelRatio);
         renderer.setSize(window.innerWidth, window.innerHeight);
 
         var container = document.getElementById("container");
@@ -31,7 +33,7 @@
           3000
         );
         camera.position.z = 500;
-        controls = new THREE.OrbitControls(camera, render, domElement);
+        controls = new OrbitControls(camera, renderer.domElement);
 
         var texture = new THREE.TextureLoader().load("particle.png");
         var material = new THREE.PointCloudMaterial({
@@ -48,10 +50,12 @@
           z = 0;
 
           geometry.vertices.push(new THREE.Vector3(x, y, z));
-          geometry.colors.push(new THREE.Color(Math.random(), Math.random()));
+          geometry.colors.push(
+            new THREE.Color(Math.random(), Math.random(), Math.random())
+          );
         }
 
-        var pointCloud = new.THREE.pointCloud(geometry, material);
+        var pointCloud = new THREE.PointCloud(geometry, material);
         scene.add(pointCloud);
       }
 
@@ -68,10 +72,10 @@
 
         geometry.verticesNeedUpdate = true;
 
-        render();
+        rendering();
       }
 
-      function render() {
+      function rendering() {
         renderer.render(scene, camera);
       }
 
