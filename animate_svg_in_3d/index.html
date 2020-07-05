@@ -8,7 +8,7 @@
   <body>
     <div id="container"></div>
     <script src="./js/three.min.js"></script>
-		<script src="./js/gsap.min.js"></script>
+    <script src="./js/gsap.min.js"></script>
 
     <script type="module">
       import * as THREE from "./js/three.module.js";
@@ -21,6 +21,7 @@
       canvas.height = size;
       canvas.classList.add("tempcanvas");
       document.body.appendChild(canvas);
+      canvas.style.display = "none";
 
       function loadImages(paths, whenLoaded) {
         var imgs = [];
@@ -71,7 +72,11 @@
         return shuffle(fillUp(imageCoords, 1500));
       }
 
-      let images = ["img/place.svg", "img/close.svg", "img/arrow.svg"];
+      let images = [
+        "img/github.svg",
+        "img/comment.svg",
+        "img/clock.svg",
+      ];
       loadImages(images, function (loadedImages) {
         var gallery = [];
         loadedImages.forEach(function (el, index) {
@@ -83,7 +88,7 @@
 
         function init() {
           scene = new THREE.Scene();
-          scene.background = new THREE.Color(0xcccccc);
+          scene.background = new THREE.Color(0xffffff);
           // scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
 
           renderer = new THREE.WebGLRenderer();
@@ -127,7 +132,7 @@
 
           gallery[0].forEach((el, index) => {
             geometry.vertices.push(
-              new THREE.Vector3(el[0], el[1], Math.random() * 100)
+              new THREE.Vector3(el[0], el[1], Math.random() * 30)
             );
             geometry.colors.push(
               new THREE.Color(Math.random(), Math.random(), Math.random())
